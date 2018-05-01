@@ -20,14 +20,16 @@ export default class Todo extends Component {
         this.refresh()
     }
 
-    refresh() {
-        Axios.get(`${URL}?sort=-createdAt`).then(resp => {
-            this.setState({ description: '', list: resp.data })
+    refresh(description = '') {
+        const search = description ? `&description__regex=/${description}/i` : ''
+        Axios.get(`${URL}?sort=-createdAt${search}`).then(resp => {
+            this.setState({ description: description, list: resp.data })
         })
     }
 
     handleChange(e) {
         this.setState({ description: e.target.value })
+        this.refresh(e.target.value)
     }
 
     handleAdd() {
@@ -36,12 +38,13 @@ export default class Todo extends Component {
     }
 
     handleRemove(todo) {
-        Axios.delete(`${URL}/${todo._id}`).then(resp => this.refresh())
+        Axios.delete(`${URL}/${todo._id}`)
+            .then(resp => this.refresh(this.state.description))
     }
 
     handleMarkItem(todo, isDone=true) {
         Axios.put(`${URL}/${todo._id}`, { ...todo, done: isDone })
-            .then(resp => this.refresh())
+            .then(resp => this.refresh(this.state.description))
     }
 
     render() {
