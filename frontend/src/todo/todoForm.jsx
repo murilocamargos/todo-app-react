@@ -8,7 +8,7 @@ export default props => (
             <input id="description" className="form-control" placeholder="Add item" type="text"/>
         </Grid>
         <Grid cols='12 3 2'>
-            <IconButton style="primary" icon="plus" />
+            <IconButton style="primary" icon="plus" onClick={props.handleAdd} />
         </Grid>
     </div>
 )
