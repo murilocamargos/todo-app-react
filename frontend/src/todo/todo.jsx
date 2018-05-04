@@ -1,63 +1,13 @@
-import React, { Component } from 'react'
-import Axios from 'axios'
+import React from 'react'
 
 import PageHeader from '../template/pageHeader'
 import TodoForm from './todoForm'
 import TodoList from './todoList'
 
-const URL = 'http://localhost:3003/api/todos'
-
-export default class Todo extends Component {
-    constructor(props) {
-        super(props)
-        this.state = { description: '', list: [] }
-
-        this.handleAdd = this.handleAdd.bind(this)
-        this.handleChange = this.handleChange.bind(this)
-        this.handleRemove = this.handleRemove.bind(this)
-        this.handleMarkItem = this.handleMarkItem.bind(this)
-
-        this.refresh()
-    }
-
-    refresh(description = '') {
-        const search = description ? `&description__regex=/${description}/i` : ''
-        Axios.get(`${URL}?sort=-createdAt${search}`).then(resp => {
-            this.setState({ description: description, list: resp.data })
-        })
-    }
-
-    handleChange(e) {
-        this.setState({ description: e.target.value })
-        this.refresh(e.target.value)
-    }
-
-    handleAdd() {
-        const description = this.state.description
-        Axios.post(URL, { description }).then(resp => this.refresh())
-    }
-
-    handleRemove(todo) {
-        Axios.delete(`${URL}/${todo._id}`)
-            .then(resp => this.refresh(this.state.description))
-    }
-
-    handleMarkItem(todo, isDone=true) {
-        Axios.put(`${URL}/${todo._id}`, { ...todo, done: isDone })
-            .then(resp => this.refresh(this.state.description))
-    }
-
-    render() {
-        return (
-            <div>
-                <PageHeader name='Todos' small='Add' />
-                <TodoForm description={this.state.description}
-                    handleAdd={this.handleAdd}
-                    handleChange={this.handleChange} />
-                <TodoList
-                    handleRemove={this.handleRemove}
-                    handleMarkItem={this.handleMarkItem} />
-            </div>
-        )
-    }
-}
+export default props => (
+    <div>
+        <PageHeader name='Todos' small='Add' />
+        <TodoForm />
+        <TodoList />
+    </div>
+)
