@@ -22,3 +22,11 @@ export const add = (description) => {
             .then(resp => dispatch(search()))
     }
 }
+
+export const mark = (todo, isDone = true) => {
+    return dispatch => {
+        axios.put(`${URL}/${todo._id}`, { ...todo, done: isDone })
+            .then(resp => dispatch({ type: 'TODO_MARKED', payload: resp.data }))
+            .then(resp => dispatch(search()))
+    }
+}
