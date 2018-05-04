@@ -26,13 +26,13 @@ class TodoForm extends Component {
     }
 
     render() {
-        const { add, search, clear, description } = this.props
+        const { add, search, clear, description, changeDescription } = this.props
         return (
             <div role="form" className="todo-form">
                 <Grid cols='12 9 10'>
                     <input id="description" className="form-control"
                         placeholder="Add item" type="text" value={description}
-                        onChange={this.props.changeDescription} onKeyUp={this.keyHandler}/>
+                        onChange={changeDescription} onKeyUp={this.keyHandler}/>
                 </Grid>
                 <Grid cols='12 3 2'>
                     <IconButton style="primary" icon="plus" onClick={() => add(description)} />
