@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 
 import Grid from '../template/grid'
 import IconButton from '../template/iconButton'
-import { changeDescription, search, add } from './todoActions'
+import { changeDescription, search, add, clear } from './todoActions'
 
 class TodoForm extends Component {
     constructor(props) {
@@ -22,7 +22,7 @@ class TodoForm extends Component {
     }
 
     render() {
-        const { add, description } = this.props
+        const { add, search, clear, description } = this.props
         return (
             <div role="form" className="todo-form">
                 <Grid cols='12 9 10'>
@@ -32,6 +32,8 @@ class TodoForm extends Component {
                 </Grid>
                 <Grid cols='12 3 2'>
                     <IconButton style="primary" icon="plus" onClick={() => add(description)} />
+                    <IconButton style="info" icon="search" onClick={() => search(description)} />
+                    <IconButton style="default" icon="times" onClick={() => clear()} />
                 </Grid>
             </div>
         )
@@ -40,6 +42,6 @@ class TodoForm extends Component {
 
 const mapStateToProps = state => ({ description: state.todo.description })
 const mapDispatchToProps = dispatch =>
-    bindActionCreators({ changeDescription, search, add }, dispatch)
+    bindActionCreators({ changeDescription, add, clear, search }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoForm)
